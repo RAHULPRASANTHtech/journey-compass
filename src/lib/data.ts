@@ -1,0 +1,313 @@
+export interface Bus {
+  id: string;
+  operatorName: string;
+  busType: string;
+  from: string;
+  to: string;
+  departureTime: string;
+  arrivalTime: string;
+  duration: string;
+  distance: string;
+  totalSeats: number;
+  occupiedSeats: number;
+  availableSeats: number;
+  price: number;
+  amenities: string[];
+  rating: number;
+}
+
+export interface TouristAttraction {
+  id: string;
+  name: string;
+  city: string;
+  description: string;
+  imageUrl: string;
+  rating: number;
+  category: string;
+}
+
+export const INDIAN_CITIES = [
+  "Bengaluru",
+  "Chennai",
+  "Hyderabad",
+  "Mumbai",
+  "Delhi",
+  "Kolkata",
+  "Pune",
+  "Coimbatore",
+  "Trivandrum",
+] as const;
+
+export type IndianCity = typeof INDIAN_CITIES[number];
+
+export const LANGUAGES = [
+  { code: "en", name: "English", nativeName: "English" },
+  { code: "hi", name: "Hindi", nativeName: "हिंदी" },
+  { code: "ta", name: "Tamil", nativeName: "தமிழ்" },
+  { code: "te", name: "Telugu", nativeName: "తెలుగు" },
+  { code: "kn", name: "Kannada", nativeName: "ಕನ್ನಡ" },
+  { code: "ml", name: "Malayalam", nativeName: "മലയാളം" },
+  { code: "mr", name: "Marathi", nativeName: "मराठी" },
+  { code: "bn", name: "Bengali", nativeName: "বাংলা" },
+] as const;
+
+export const MOCK_BUSES: Bus[] = [
+  {
+    id: "bus-001",
+    operatorName: "VRL Travels",
+    busType: "Volvo Multi-Axle Sleeper",
+    from: "Bengaluru",
+    to: "Mumbai",
+    departureTime: "21:00",
+    arrivalTime: "09:30",
+    duration: "12h 30m",
+    distance: "980 km",
+    totalSeats: 36,
+    occupiedSeats: 24,
+    availableSeats: 12,
+    price: 1850,
+    amenities: ["WiFi", "Charging", "Blanket", "Water"],
+    rating: 4.5,
+  },
+  {
+    id: "bus-002",
+    operatorName: "SRS Travels",
+    busType: "Mercedes AC Sleeper",
+    from: "Bengaluru",
+    to: "Chennai",
+    departureTime: "23:00",
+    arrivalTime: "05:30",
+    duration: "6h 30m",
+    distance: "350 km",
+    totalSeats: 40,
+    occupiedSeats: 35,
+    availableSeats: 5,
+    price: 950,
+    amenities: ["WiFi", "Charging", "Entertainment"],
+    rating: 4.3,
+  },
+  {
+    id: "bus-003",
+    operatorName: "Orange Travels",
+    busType: "Volvo AC Seater",
+    from: "Hyderabad",
+    to: "Bengaluru",
+    departureTime: "22:30",
+    arrivalTime: "06:00",
+    duration: "7h 30m",
+    distance: "570 km",
+    totalSeats: 44,
+    occupiedSeats: 20,
+    availableSeats: 24,
+    price: 1100,
+    amenities: ["Charging", "Water", "Snacks"],
+    rating: 4.1,
+  },
+  {
+    id: "bus-004",
+    operatorName: "KSRTC Airavat",
+    busType: "Volvo Multi-Axle A/C",
+    from: "Bengaluru",
+    to: "Hyderabad",
+    departureTime: "20:00",
+    arrivalTime: "04:00",
+    duration: "8h",
+    distance: "570 km",
+    totalSeats: 48,
+    occupiedSeats: 40,
+    availableSeats: 8,
+    price: 1250,
+    amenities: ["WiFi", "Charging", "Blanket", "Water", "Entertainment"],
+    rating: 4.7,
+  },
+  {
+    id: "bus-005",
+    operatorName: "Neeta Travels",
+    busType: "Scania Multi-Axle Sleeper",
+    from: "Mumbai",
+    to: "Pune",
+    departureTime: "18:00",
+    arrivalTime: "22:00",
+    duration: "4h",
+    distance: "150 km",
+    totalSeats: 32,
+    occupiedSeats: 28,
+    availableSeats: 4,
+    price: 650,
+    amenities: ["WiFi", "Charging"],
+    rating: 4.4,
+  },
+  {
+    id: "bus-006",
+    operatorName: "KPN Travels",
+    busType: "Volvo B11R Sleeper",
+    from: "Chennai",
+    to: "Coimbatore",
+    departureTime: "22:00",
+    arrivalTime: "06:00",
+    duration: "8h",
+    distance: "500 km",
+    totalSeats: 36,
+    occupiedSeats: 18,
+    availableSeats: 18,
+    price: 1050,
+    amenities: ["WiFi", "Charging", "Blanket", "Water"],
+    rating: 4.6,
+  },
+];
+
+export const TOURIST_ATTRACTIONS: TouristAttraction[] = [
+  {
+    id: "attr-001",
+    name: "Gateway of India",
+    city: "Mumbai",
+    description: "Iconic arch monument overlooking the Arabian Sea",
+    imageUrl: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=400",
+    rating: 4.6,
+    category: "Monument",
+  },
+  {
+    id: "attr-002",
+    name: "Marine Drive",
+    city: "Mumbai",
+    description: "Scenic promenade along the coast, perfect for evening walks",
+    imageUrl: "https://images.unsplash.com/photo-1567157577867-05ccb1388e66?w=400",
+    rating: 4.5,
+    category: "Landmark",
+  },
+  {
+    id: "attr-003",
+    name: "Lalbagh Botanical Garden",
+    city: "Bengaluru",
+    description: "Historic garden with rare plants and a stunning glass house",
+    imageUrl: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400",
+    rating: 4.4,
+    category: "Garden",
+  },
+  {
+    id: "attr-004",
+    name: "Bangalore Palace",
+    city: "Bengaluru",
+    description: "Tudor-style palace with beautiful architecture and gardens",
+    imageUrl: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=400",
+    rating: 4.3,
+    category: "Palace",
+  },
+  {
+    id: "attr-005",
+    name: "Marina Beach",
+    city: "Chennai",
+    description: "One of the longest urban beaches in the world",
+    imageUrl: "https://images.unsplash.com/photo-1590079528578-3ad2a9f9d86d?w=400",
+    rating: 4.2,
+    category: "Beach",
+  },
+  {
+    id: "attr-006",
+    name: "Kapaleeshwarar Temple",
+    city: "Chennai",
+    description: "Ancient Dravidian temple dedicated to Lord Shiva",
+    imageUrl: "https://images.unsplash.com/photo-1621621571519-d15b99887b7f?w=400",
+    rating: 4.7,
+    category: "Temple",
+  },
+  {
+    id: "attr-007",
+    name: "Charminar",
+    city: "Hyderabad",
+    description: "Iconic mosque and monument in the heart of the old city",
+    imageUrl: "https://images.unsplash.com/photo-1603813507806-0d8dd1e6d89f?w=400",
+    rating: 4.5,
+    category: "Monument",
+  },
+  {
+    id: "attr-008",
+    name: "Golconda Fort",
+    city: "Hyderabad",
+    description: "Majestic medieval fort with stunning architecture",
+    imageUrl: "https://images.unsplash.com/photo-1590755676847-fc0ba2a29dd3?w=400",
+    rating: 4.6,
+    category: "Fort",
+  },
+  {
+    id: "attr-009",
+    name: "India Gate",
+    city: "Delhi",
+    description: "War memorial and iconic landmark of New Delhi",
+    imageUrl: "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=400",
+    rating: 4.7,
+    category: "Monument",
+  },
+  {
+    id: "attr-010",
+    name: "Red Fort",
+    city: "Delhi",
+    description: "Historic Mughal-era fort and UNESCO World Heritage Site",
+    imageUrl: "https://images.unsplash.com/photo-1548013146-72479768bada?w=400",
+    rating: 4.6,
+    category: "Fort",
+  },
+  {
+    id: "attr-011",
+    name: "Victoria Memorial",
+    city: "Kolkata",
+    description: "Marble building dedicated to Queen Victoria",
+    imageUrl: "https://images.unsplash.com/photo-1558431382-27e303142255?w=400",
+    rating: 4.5,
+    category: "Monument",
+  },
+  {
+    id: "attr-012",
+    name: "Howrah Bridge",
+    city: "Kolkata",
+    description: "Iconic cantilever bridge over the Hooghly River",
+    imageUrl: "https://images.unsplash.com/photo-1536421469767-80559bb6f5e1?w=400",
+    rating: 4.4,
+    category: "Landmark",
+  },
+  {
+    id: "attr-013",
+    name: "Shaniwar Wada",
+    city: "Pune",
+    description: "Historic fortification and seat of the Peshwa rulers",
+    imageUrl: "https://images.unsplash.com/photo-1580581096469-8afb14c13bcb?w=400",
+    rating: 4.3,
+    category: "Fort",
+  },
+  {
+    id: "attr-014",
+    name: "Marudhamalai Temple",
+    city: "Coimbatore",
+    description: "Ancient hill temple dedicated to Lord Murugan",
+    imageUrl: "https://images.unsplash.com/photo-1609766857041-ed402ea8069a?w=400",
+    rating: 4.5,
+    category: "Temple",
+  },
+  {
+    id: "attr-015",
+    name: "Padmanabhaswamy Temple",
+    city: "Trivandrum",
+    description: "Famous temple known for its Dravidian architecture",
+    imageUrl: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=400",
+    rating: 4.8,
+    category: "Temple",
+  },
+];
+
+export function getBusesByRoute(from: string, to: string): Bus[] {
+  return MOCK_BUSES.filter(
+    (bus) =>
+      bus.from.toLowerCase() === from.toLowerCase() &&
+      bus.to.toLowerCase() === to.toLowerCase()
+  );
+}
+
+export function getAllAvailableBuses(): Bus[] {
+  return MOCK_BUSES;
+}
+
+export function getAttractionsByCity(city: string): TouristAttraction[] {
+  return TOURIST_ATTRACTIONS.filter(
+    (attraction) => attraction.city.toLowerCase() === city.toLowerCase()
+  );
+}
