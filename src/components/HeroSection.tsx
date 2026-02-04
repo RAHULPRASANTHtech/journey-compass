@@ -19,7 +19,11 @@ import { INDIAN_CITIES, IndianCity } from "@/lib/data";
 import heroImage from "@/assets/hero-bus-travel.jpg";
 import { cn } from "@/lib/utils";
 
-export function HeroSection() {
+interface HeroSectionProps {
+  onSearchClick?: () => void;
+}
+
+export function HeroSection({ onSearchClick }: HeroSectionProps) {
   const { fromCity, setFromCity, toCity, setToCity, journeyDate, setJourneyDate } = useApp();
 
   const handleSwapCities = () => {
@@ -145,7 +149,11 @@ export function HeroSection() {
               </div>
 
               <div className="flex items-end">
-                <Button size="lg" className="h-12 w-full md:w-auto px-8">
+                <Button
+                  size="lg"
+                  className="h-12 w-full md:w-auto px-8"
+                  onClick={onSearchClick}
+                >
                   Search Buses
                 </Button>
               </div>

@@ -1,20 +1,34 @@
-import { Bus as BusIcon, Filter, SortAsc } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Bus as BusIcon, Filter, SortAsc, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BusCard } from "./BusCard";
 import { useApp } from "@/contexts/AppContext";
 import { getAllAvailableBuses, getBusesByRoute } from "@/lib/data";
+import { Bus } from "@/lib/data";
+
+const INITIAL_BUS_COUNT = 3;
 
 export function BusListings() {
-  const { fromCity, toCity } = useApp();
+  const { fromCity, toCity, journeyDate } = useApp();
+  const [showAllBuses, setShowAllBuses] = useState(false);
 
-  const buses = fromCity && toCity 
-    ? getBusesByRoute(fromCity, toCity) 
-    : getAllAvailableBuses();
+  const allBuses =
+    fromCity && toCity
+      ? getBusesByRoute(fromCity, toCity, journeyDate)
+      : getAllAvailableBuses(journeyDate);
+
+  useEffect(() => {
+    setShowAllBuses(false);
+  }, [fromCity, toCity, journeyDate]);
+
+  const buses: Bus[] = showAllBuses ? allBuses : allBuses.slice(0, INITIAL_BUS_COUNT);
+  const hasMore = allBuses.length > INITIAL_BUS_COUNT;
+  const hiddenCount = allBuses.length - INITIAL_BUS_COUNT;
 
   const hasSearchCriteria = fromCity && toCity;
 
   return (
-    <section className="py-16 bg-background">
+    <section id="available-buses" className="py-16 bg-background scroll-mt-20">
       <div className="container">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>
@@ -29,8 +43,9 @@ export function BusListings() {
               </h2>
             </div>
             <p className="text-muted-foreground">
-              {buses.length} bus{buses.length !== 1 ? "es" : ""} found
+              {allBuses.length} bus{allBuses.length !== 1 ? "es" : ""} found
               {hasSearchCriteria ? " for your route" : " across popular routes"}
+              {hasMore && !showAllBuses && ` (showing ${INITIAL_BUS_COUNT})`}
             </p>
           </div>
 
@@ -57,10 +72,24 @@ export function BusListings() {
             </p>
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {buses.map((bus) => (
-              <BusCard key={bus.id} bus={bus} />
-            ))}
+          <div className="space-y-6">
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {buses.map((bus) => (
+                <BusCard key={bus.id} bus={bus} />
+              ))}
+            </div>
+            {hasMore && !showAllBuses && (
+              <div className="flex justify-center pt-4">
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() => setShowAllBuses(true)}
+                >
+                  <ChevronDown className="h-4 w-4" />
+                  Show all buses ({hiddenCount} more)
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>

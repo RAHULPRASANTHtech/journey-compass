@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,11 +11,14 @@ import { Separator } from "@/components/ui/separator";
 import { Bus } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/contexts/AppContext";
-import { EmailConfirmationStep } from "./booking/EmailConfirmationStep";
+import { useAuth } from "@/contexts/AuthContext";
 import { PaymentMethodStep } from "./booking/PaymentMethodStep";
+import { SignInModal } from "./SignInModal";
+import { getBookedSeats, createBooking } from "@/lib/database";
+import { sendBookingConfirmation } from "@/lib/booking-api";
 import { toast } from "sonner";
 
-type BookingStep = "seats" | "email" | "payment";
+type BookingStep = "seats" | "payment";
 
 interface SeatSelectionModalProps {
   bus: Bus;
@@ -34,15 +37,15 @@ interface Seat {
   deck: "lower" | "upper";
 }
 
-// Generate seat layout based on bus type
-function generateSeats(totalSeats: number, occupiedSeats: number): Seat[] {
+// Parse seat number (L1, U2, etc.) to numeric 1-based index
+function parseSeatNumber(displayNum: string): number {
+  const match = displayNum.match(/^[LU](\d+)$/);
+  return match ? parseInt(match[1], 10) : 0;
+}
+
+// Generate seat layout based on bus type (bookedSeatNumbers from database)
+function generateSeats(totalSeats: number, bookedSeatNumbers: Set<number>): Seat[] {
   const seats: Seat[] = [];
-  const bookedSeatNumbers = new Set<number>();
-  
-  // Randomly select booked seats
-  while (bookedSeatNumbers.size < occupiedSeats) {
-    bookedSeatNumbers.add(Math.floor(Math.random() * totalSeats) + 1);
-  }
 
   // For sleeper buses, we'll create a 2+1 layout (common in India)
   const seatsPerRow = 3;
@@ -95,16 +98,27 @@ function generateSeats(totalSeats: number, occupiedSeats: number): Seat[] {
 
 export function SeatSelectionModal({ bus, open, onOpenChange }: SeatSelectionModalProps) {
   const { journeyDate } = useApp();
-  const [seats, setSeats] = useState<Seat[]>(() => 
-    generateSeats(bus.totalSeats, bus.occupiedSeats)
-  );
-  const [currentStep, setCurrentStep] = useState<BookingStep>("seats");
-  const [userEmail, setUserEmail] = useState("");
-
   const travelDate = journeyDate
     ? journeyDate.toISOString().split("T")[0]
     : new Date().toISOString().split("T")[0];
-  
+  const bookedFromDb = useMemo(
+    () => new Set(getBookedSeats(bus.id, travelDate)),
+    [bus.id, travelDate]
+  );
+  const [seats, setSeats] = useState<Seat[]>(() =>
+    generateSeats(bus.totalSeats, bookedFromDb)
+  );
+
+  useEffect(() => {
+    if (open) {
+      const booked = new Set(getBookedSeats(bus.id, travelDate));
+      setSeats(generateSeats(bus.totalSeats, booked));
+    }
+  }, [open, bus.id, bus.totalSeats, travelDate]);
+  const [currentStep, setCurrentStep] = useState<BookingStep>("seats");
+  const [signInOpen, setSignInOpen] = useState(false);
+  const { isLoggedIn, userEmail } = useAuth();
+
   const selectedSeats = useMemo(() => 
     seats.filter(seat => seat.status === "selected"),
     [seats]
@@ -149,31 +163,69 @@ export function SeatSelectionModal({ bus, open, onOpenChange }: SeatSelectionMod
     return grouped;
   }, [seats]);
   
-  const handleProceedToEmail = () => {
-    if (selectedSeats.length > 0) {
-      setCurrentStep("email");
+  const handleProceedToPayment = () => {
+    if (selectedSeats.length === 0) return;
+    if (!isLoggedIn || !userEmail) {
+      setSignInOpen(true);
+      return;
     }
+    setCurrentStep("payment");
   };
 
-  const handleEmailConfirm = (email: string) => {
-    setUserEmail(email);
+  const handleSignInSuccess = () => {
+    setSignInOpen(false);
     setCurrentStep("payment");
   };
 
   const handlePaymentConfirm = (method: string) => {
-    toast.success(`Booking confirmed! Payment via ${method}`, {
-      description: `Confirmation sent to ${userEmail}`,
-    });
-    onOpenChange(false);
-    // Reset state for next booking
-    setCurrentStep("seats");
-    setUserEmail("");
+    if (!userEmail) {
+      toast.error("Please sign in to complete booking");
+      setSignInOpen(true);
+      return;
+    }
+    const seatNumbers = selectedSeats
+      .map((s) => parseSeatNumber(s.number))
+      .filter((n) => n > 0);
+    const seatNumbersDisplay = selectedSeats.map((s) => s.number);
+    try {
+      const booking = createBooking(
+        bus.id,
+        bus.from,
+        bus.to,
+        travelDate,
+        bus.departureTime,
+        seatNumbers,
+        seatNumbersDisplay,
+        userEmail,
+        method,
+        totalFare
+      );
+      sendBookingConfirmation({
+        busId: bus.id,
+        from: bus.from,
+        to: bus.to,
+        date: travelDate,
+        time: bus.departureTime,
+        seat: seatNumbersDisplay.join(", "),
+        bookingId: booking.id,
+        userEmail,
+      });
+      toast.success(`Booking confirmed! Payment via ${method}`, {
+        description: `Confirmation sent to ${userEmail}. Booking ID: ${booking.id}`,
+      });
+      onOpenChange(false);
+      setCurrentStep("seats");
+    } catch (err) {
+      toast.error("Booking failed", {
+        description: err instanceof Error ? err.message : "Please try again",
+      });
+    }
   };
 
   const handleClose = (isOpen: boolean) => {
     if (!isOpen) {
       setCurrentStep("seats");
-      setUserEmail("");
+      setSignInOpen(false);
     }
     onOpenChange(isOpen);
   };
@@ -184,7 +236,6 @@ export function SeatSelectionModal({ bus, open, onOpenChange }: SeatSelectionMod
         <DialogHeader>
           <DialogTitle className="text-xl">
             {currentStep === "seats" && "Select Your Seats – BusOnGo"}
-            {currentStep === "email" && "Confirm Email – BusOnGo"}
             {currentStep === "payment" && "Payment – BusOnGo"}
           </DialogTitle>
           <p className="text-sm text-muted-foreground">
@@ -192,32 +243,24 @@ export function SeatSelectionModal({ bus, open, onOpenChange }: SeatSelectionMod
           </p>
         </DialogHeader>
 
-        {/* Email Confirmation Step */}
-        {currentStep === "email" && (
-          <div className="flex-1 min-h-0 overflow-y-auto">
-            <EmailConfirmationStep
-              onConfirm={handleEmailConfirm}
-              onBack={() => setCurrentStep("seats")}
-              totalFare={totalFare}
-              selectedSeatsCount={selectedSeats.length}
-              route={`${bus.from} → ${bus.to}`}
-              seatNumbers={selectedSeats.map((s) => s.number)}
-              travelDate={travelDate}
-            />
-          </div>
-        )}
-
         {/* Payment Method Step */}
         {currentStep === "payment" && (
           <div className="flex-1 min-h-0 overflow-y-auto">
             <PaymentMethodStep
               onConfirm={handlePaymentConfirm}
-              onBack={() => setCurrentStep("email")}
+              onBack={() => setCurrentStep("seats")}
               totalFare={totalFare}
-              email={userEmail}
+              email={userEmail ?? ""}
             />
           </div>
         )}
+
+        <SignInModal
+          open={signInOpen}
+          onOpenChange={setSignInOpen}
+          reason="Sign in to complete your booking"
+          onSuccess={handleSignInSuccess}
+        />
 
         {/* Seat Selection Step */}
         {currentStep === "seats" && (
@@ -342,7 +385,7 @@ export function SeatSelectionModal({ bus, open, onOpenChange }: SeatSelectionMod
                 className="w-full" 
                 size="lg" 
                 disabled={selectedSeats.length === 0}
-                onClick={handleProceedToEmail}
+                onClick={handleProceedToPayment}
               >
                 {selectedSeats.length > 0 
                   ? `Proceed to Pay ₹${totalFare.toLocaleString()}`

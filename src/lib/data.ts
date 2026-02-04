@@ -36,6 +36,17 @@ export const INDIAN_CITIES = [
   "Pune",
   "Coimbatore",
   "Trivandrum",
+  "Jaipur",
+  "Ahmedabad",
+  "Kochi",
+  "Mangalore",
+  "Madurai",
+  "Goa",
+  "Chandigarh",
+  "Bhopal",
+  "Nagpur",
+  "Indore",
+  "Surat",
 ] as const;
 
 export type IndianCity = typeof INDIAN_CITIES[number];
@@ -153,6 +164,210 @@ export const MOCK_BUSES: Bus[] = [
     price: 1050,
     amenities: ["WiFi", "Charging", "Blanket", "Water"],
     rating: 4.6,
+  },
+  {
+    id: "bus-007",
+    operatorName: "Raj Ratan Travels",
+    busType: "Scania AC Sleeper",
+    from: "Delhi",
+    to: "Jaipur",
+    departureTime: "22:30",
+    arrivalTime: "05:00",
+    duration: "6h 30m",
+    distance: "280 km",
+    totalSeats: 36,
+    occupiedSeats: 0,
+    availableSeats: 36,
+    price: 650,
+    amenities: ["WiFi", "Charging", "Blanket", "Water"],
+    rating: 4.4,
+  },
+  {
+    id: "bus-008",
+    operatorName: "IntrCity SmartBus",
+    busType: "Volvo AC Sleeper",
+    from: "Mumbai",
+    to: "Ahmedabad",
+    departureTime: "23:00",
+    arrivalTime: "07:00",
+    duration: "8h",
+    distance: "530 km",
+    totalSeats: 40,
+    occupiedSeats: 0,
+    availableSeats: 40,
+    price: 1200,
+    amenities: ["WiFi", "Charging", "Blanket", "Water", "Entertainment"],
+    rating: 4.5,
+  },
+  {
+    id: "bus-009",
+    operatorName: "Kerala SRTC",
+    busType: "Volvo Multi-Axle A/C",
+    from: "Bengaluru",
+    to: "Kochi",
+    departureTime: "21:00",
+    arrivalTime: "07:30",
+    duration: "10h 30m",
+    distance: "565 km",
+    totalSeats: 44,
+    occupiedSeats: 0,
+    availableSeats: 44,
+    price: 950,
+    amenities: ["WiFi", "Charging", "Water"],
+    rating: 4.2,
+  },
+  {
+    id: "bus-010",
+    operatorName: "Ksrtc Rajahamsa",
+    busType: "Scania AC Sleeper",
+    from: "Bengaluru",
+    to: "Mangalore",
+    departureTime: "22:00",
+    arrivalTime: "06:30",
+    duration: "8h 30m",
+    distance: "350 km",
+    totalSeats: 36,
+    occupiedSeats: 0,
+    availableSeats: 36,
+    price: 750,
+    amenities: ["Charging", "Water", "Blanket"],
+    rating: 4.3,
+  },
+  {
+    id: "bus-011",
+    operatorName: "Parveen Travels",
+    busType: "Volvo B11R Sleeper",
+    from: "Chennai",
+    to: "Madurai",
+    departureTime: "22:30",
+    arrivalTime: "05:00",
+    duration: "6h 30m",
+    distance: "450 km",
+    totalSeats: 40,
+    occupiedSeats: 0,
+    availableSeats: 40,
+    price: 850,
+    amenities: ["WiFi", "Charging", "Blanket"],
+    rating: 4.4,
+  },
+  {
+    id: "bus-012",
+    operatorName: "Paulo Travels",
+    busType: "Mercedes AC Sleeper",
+    from: "Bengaluru",
+    to: "Goa",
+    departureTime: "20:00",
+    arrivalTime: "08:00",
+    duration: "12h",
+    distance: "560 km",
+    totalSeats: 36,
+    occupiedSeats: 0,
+    availableSeats: 36,
+    price: 1400,
+    amenities: ["WiFi", "Charging", "Blanket", "Water", "Entertainment"],
+    rating: 4.6,
+  },
+  {
+    id: "bus-013",
+    operatorName: "UPSRTC Volvo",
+    busType: "Volvo Multi-Axle A/C",
+    from: "Delhi",
+    to: "Chandigarh",
+    departureTime: "06:00",
+    arrivalTime: "10:30",
+    duration: "4h 30m",
+    distance: "250 km",
+    totalSeats: 48,
+    occupiedSeats: 0,
+    availableSeats: 48,
+    price: 550,
+    amenities: ["WiFi", "Charging", "Water"],
+    rating: 4.5,
+  },
+  {
+    id: "bus-014",
+    operatorName: "Shrinath Travels",
+    busType: "Volvo AC Seater",
+    from: "Indore",
+    to: "Bhopal",
+    departureTime: "07:00",
+    arrivalTime: "11:00",
+    duration: "4h",
+    distance: "195 km",
+    totalSeats: 44,
+    occupiedSeats: 0,
+    availableSeats: 44,
+    price: 450,
+    amenities: ["Charging", "Water"],
+    rating: 4.2,
+  },
+  {
+    id: "bus-015",
+    operatorName: "Orange Travels",
+    busType: "Scania Sleeper",
+    from: "Hyderabad",
+    to: "Nagpur",
+    departureTime: "20:00",
+    arrivalTime: "08:00",
+    duration: "12h",
+    distance: "500 km",
+    totalSeats: 36,
+    occupiedSeats: 0,
+    availableSeats: 36,
+    price: 1100,
+    amenities: ["WiFi", "Charging", "Blanket", "Water"],
+    rating: 4.3,
+  },
+  {
+    id: "bus-016",
+    operatorName: "VRL Travels",
+    busType: "Volvo Sleeper",
+    from: "Mumbai",
+    to: "Surat",
+    departureTime: "23:00",
+    arrivalTime: "05:30",
+    duration: "6h 30m",
+    distance: "280 km",
+    totalSeats: 40,
+    occupiedSeats: 0,
+    availableSeats: 40,
+    price: 650,
+    amenities: ["WiFi", "Charging", "Water"],
+    rating: 4.4,
+  },
+  {
+    id: "bus-017",
+    operatorName: "SRS Travels",
+    busType: "Mercedes AC Sleeper",
+    from: "Kolkata",
+    to: "Delhi",
+    departureTime: "18:00",
+    arrivalTime: "14:00",
+    duration: "20h",
+    distance: "1450 km",
+    totalSeats: 36,
+    occupiedSeats: 0,
+    availableSeats: 36,
+    price: 2200,
+    amenities: ["WiFi", "Charging", "Blanket", "Water", "Entertainment"],
+    rating: 4.5,
+  },
+  {
+    id: "bus-018",
+    operatorName: "Neeta Travels",
+    busType: "Volvo B11R Sleeper",
+    from: "Pune",
+    to: "Goa",
+    departureTime: "22:00",
+    arrivalTime: "07:00",
+    duration: "9h",
+    distance: "450 km",
+    totalSeats: 36,
+    occupiedSeats: 0,
+    availableSeats: 36,
+    price: 1200,
+    amenities: ["WiFi", "Charging", "Blanket", "Water"],
+    rating: 4.4,
   },
 ];
 
@@ -292,18 +507,157 @@ export const TOURIST_ATTRACTIONS: TouristAttraction[] = [
     rating: 4.8,
     category: "Temple",
   },
+  {
+    id: "attr-016",
+    name: "Amber Fort",
+    city: "Jaipur",
+    description: "Magnificent hilltop fort with stunning architecture",
+    imageUrl: "https://images.unsplash.com/photo-1563577485996-65f7f74a1e7e?w=400",
+    rating: 4.7,
+    category: "Fort",
+  },
+  {
+    id: "attr-017",
+    name: "Hawa Mahal",
+    city: "Jaipur",
+    description: "Palace of Winds with iconic honeycomb facade",
+    imageUrl: "https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?w=400",
+    rating: 4.5,
+    category: "Palace",
+  },
+  {
+    id: "attr-018",
+    name: "Sabarmati Ashram",
+    city: "Ahmedabad",
+    description: "Historic ashram where Gandhi lived",
+    imageUrl: "https://images.unsplash.com/photo-1584455013159-0c49d0b31d75?w=400",
+    rating: 4.6,
+    category: "Heritage",
+  },
+  {
+    id: "attr-019",
+    name: "Marine Drive",
+    city: "Kochi",
+    description: "Scenic waterfront promenade with Chinese fishing nets",
+    imageUrl: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=400",
+    rating: 4.4,
+    category: "Landmark",
+  },
+  {
+    id: "attr-020",
+    name: "Fort Kochi",
+    city: "Kochi",
+    description: "Historic fort area with colonial architecture",
+    imageUrl: "https://images.unsplash.com/photo-1598272815066-27a4bb4c7a4b?w=400",
+    rating: 4.5,
+    category: "Fort",
+  },
+  {
+    id: "attr-021",
+    name: "Panambur Beach",
+    city: "Mangalore",
+    description: "Picturesque beach with golden sands",
+    imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400",
+    rating: 4.2,
+    category: "Beach",
+  },
+  {
+    id: "attr-022",
+    name: "Meenakshi Amman Temple",
+    city: "Madurai",
+    description: "Spectacular temple complex dedicated to Goddess Meenakshi",
+    imageUrl: "https://images.unsplash.com/photo-1562886889-4d9707241560?w=400",
+    rating: 4.8,
+    category: "Temple",
+  },
+  {
+    id: "attr-023",
+    name: "Baga Beach",
+    city: "Goa",
+    description: "Famous beach with vibrant nightlife",
+    imageUrl: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400",
+    rating: 4.5,
+    category: "Beach",
+  },
+  {
+    id: "attr-024",
+    name: "Rock Garden",
+    city: "Chandigarh",
+    description: "Unique sculpture garden made from industrial waste",
+    imageUrl: "https://images.unsplash.com/photo-1590073844006-33379778ae02?w=400",
+    rating: 4.6,
+    category: "Garden",
+  },
 ];
 
-export function getBusesByRoute(from: string, to: string): Bus[] {
-  return MOCK_BUSES.filter(
-    (bus) =>
-      bus.from.toLowerCase() === from.toLowerCase() &&
-      bus.to.toLowerCase() === to.toLowerCase()
-  );
+import {
+  getBusAvailability,
+  getBusesFromDb,
+  seedDatabaseIfEmpty,
+} from "./database";
+import type { Bus as DbBus } from "./database";
+
+// Map to database bus format (no occupancy - computed per date)
+const toDbBus = (b: Bus): DbBus => ({
+  id: b.id,
+  operatorName: b.operatorName,
+  busType: b.busType,
+  from: b.from,
+  to: b.to,
+  departureTime: b.departureTime,
+  arrivalTime: b.arrivalTime,
+  duration: b.duration,
+  distance: b.distance,
+  totalSeats: b.totalSeats,
+  price: b.price,
+  amenities: b.amenities,
+  rating: b.rating,
+});
+
+function enrichBusWithAvailability(
+  bus: DbBus & { occupiedSeats?: number; availableSeats?: number },
+  date?: Date
+): Bus {
+  const base = {
+    ...bus,
+    occupiedSeats: 0,
+    availableSeats: bus.totalSeats,
+  };
+  if (!date) return base as Bus;
+  const avail = getBusAvailability(bus.id, date, bus.totalSeats);
+  return { ...base, ...avail } as Bus;
 }
 
-export function getAllAvailableBuses(): Bus[] {
-  return MOCK_BUSES;
+export function getBusesByRoute(
+  from: string,
+  to: string,
+  date?: Date
+): Bus[] {
+  seedDatabaseIfEmpty(MOCK_BUSES.map(toDbBus));
+  const all = getBusesFromDb(MOCK_BUSES.map(toDbBus));
+  const buses = all
+    .map((b) => ({
+      ...b,
+      occupiedSeats: 0,
+      availableSeats: b.totalSeats,
+    }))
+    .filter(
+      (bus) =>
+        bus.from.toLowerCase() === from.toLowerCase() &&
+        bus.to.toLowerCase() === to.toLowerCase()
+    );
+  return buses.map((b) => enrichBusWithAvailability(b, date));
+}
+
+export function getAllAvailableBuses(date?: Date): Bus[] {
+  seedDatabaseIfEmpty(MOCK_BUSES.map(toDbBus));
+  const all = getBusesFromDb(MOCK_BUSES.map(toDbBus));
+  const buses = all.map((b) => ({
+    ...b,
+    occupiedSeats: 0,
+    availableSeats: b.totalSeats,
+  }));
+  return buses.map((b) => enrichBusWithAvailability(b, date));
 }
 
 export function getAttractionsByCity(city: string): TouristAttraction[] {
