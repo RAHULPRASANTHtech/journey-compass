@@ -1,73 +1,190 @@
-# Welcome to your Lovable project
+🚌 Bus On Go
 
-## Project info
+Bus On Go is a full-stack bus booking web application with OTP-based authentication, booking management, and email confirmations powered by n8n workflows.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+The project focuses on clean frontend–backend integration, real-world API contracts, and production-style automation.
 
-## How can I edit this code?
+✨ Features
+🔐 Authentication
 
-There are several ways of editing your application.
+Email-based OTP login
 
-**Use Lovable**
+OTP expiry (5 minutes)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+Secure verification using n8n
 
-Changes made via Lovable will be committed automatically to this repo.
+Clear status handling:
 
-**Use your preferred IDE**
+SUCCESS
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+EXPIRED
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+FAILED
 
-Follow these steps:
+NO_OTP
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+🚌 Bus Booking
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Search and book buses
 
-# Step 3: Install the necessary dependencies.
-npm i
+Seat selection
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+Booking confirmation
 
-**Edit a file directly in GitHub**
+Booking history per user
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+❌ Booking Cancellation
 
-**Use GitHub Codespaces**
+Cancel confirmed bookings
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Automatic cancellation confirmation email
 
-## What technologies are used for this project?
+Refund amount shown in email
 
-This project is built with:
+Safe cancellation flow
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+📧 Email Automation (n8n)
 
-## How can I deploy this project?
+OTP email
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+Booking confirmation email
 
-## Can I connect a custom domain to my Lovable project?
+Cancellation confirmation email
 
-Yes, you can!
+All emails handled via n8n webhooks
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+🏗️ Tech Stack
+Frontend
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+React + TypeScript
+
+React Router
+
+Tailwind CSS
+
+Shadcn UI
+
+Lucide Icons
+
+Backend / Automation
+
+n8n (Cloud / Self-hosted)
+
+Webhook-based APIs
+
+Data Tables for persistent storage
+
+Gmail integration
+
+Utilities
+
+date-fns (date formatting)
+
+sonner (toast notifications)
+
+🔄 Architecture Overview
+Frontend (React)
+   |
+   |  POST JSON (fetch)
+   v
+n8n Webhooks
+   |
+   |-- OTP workflow
+   |-- Booking confirmation workflow
+   |-- Cancel booking workflow
+   |
+   v
+Gmail (Email Notifications)
+
+🔐 OTP Authentication Flow
+
+User enters email
+
+Frontend calls OTP Send Webhook
+
+n8n:
+
+Generates OTP
+
+Stores OTP in Data Table
+
+Sends OTP via Gmail
+
+User enters OTP
+
+Frontend calls OTP Verify Webhook
+
+n8n:
+
+Checks OTP
+
+Validates expiry
+
+Responds with status
+
+OTP Status Codes
+SUCCESS | EXPIRED | FAILED | NO_OTP
+
+📦 Booking Confirmation Flow
+
+User completes booking
+
+Booking is saved in database
+
+Frontend sends booking details to Booking Webhook
+
+n8n sends booking confirmation email
+
+Booking Payload (Example)
+{
+  "bookingId": "bkg-123",
+  "userEmail": "user@example.com",
+  "from": "Chennai",
+  "to": "Bangalore",
+  "date": "2026-02-10",
+  "time": "22:30",
+  "seat": "A1, A2",
+  "totalAmount": 450
+}
+
+❌ Cancel Booking Flow
+
+User clicks Cancel Booking
+
+Booking is marked cancelled in database
+
+Frontend sends cancellation data to Cancel Webhook
+
+n8n sends cancellation confirmation email
+
+Refund amount is included in email
+
+Cancel Payload (Example)
+{
+  "bookingId": "bkg-123",
+  "userEmail": "user@example.com",
+  "from": "Chennai",
+  "to": "Bangalore",
+  "date": "2026-02-10",
+  "seat": "A1, A2",
+  "totalAmount": 450
+}
+
+📁 Project Structure (Simplified)
+src/
+├── components/
+│   ├── Header.tsx
+│   ├── Footer.tsx
+│   └── SignInModal.tsx
+├── pages/
+│   ├── MyBookings.tsx
+│   └── Home.tsx
+├── lib/
+│   ├── booking-api.ts
+│   ├── database.ts
+│   └── webhooks.ts
+├── contexts/
+│   └── AuthContext.tsx
+└── App.tsx
+
+⚙️ Environment Variables
