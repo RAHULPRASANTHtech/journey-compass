@@ -1,10 +1,3 @@
-
----
-
-## ✅ FIXED README TEMPLATE (LINE-SAFE)
-
-👉 **Use this exact structure** (this will render perfectly):
-
 ```md
 # 🚌 Bus On Go
 
